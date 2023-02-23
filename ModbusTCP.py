@@ -1,5 +1,5 @@
 from pymodbus.client import ModbusTcpClient
-import pymodbus.exceptions as exex
+
 class client:
 
     def __init__(self,ip,port):
@@ -30,8 +30,6 @@ class client:
         except:
             print("Could not properly read registers")
             
-
-
     def writeToTextResigter(self,regStart,regCount,slaveID,payload):
         regBefore,valueBefore=self.readFromTextRegister(regStart,regCount,slaveID)
         returns=self.connection.write_registers(regStart,payload,slaveID) 
@@ -39,11 +37,12 @@ class client:
             raise Exception
         else:
             print("Values before changes:\n{}\n{}".format(regBefore,valueBefore))
-            print("Values after changes:")
-            print(self.readFromTextRegister(regStart,regCount,slaveID))
-
+            regAfter,valueAfter=self.readFromTextRegister(regStart,regCount,slaveID)
+            print("Values after changes:\n{}\n{}".format(regAfter,valueAfter))
+           
     def __del__(self):
         print("destructor called, object destroyed") 
+    
     
 def main():
     modbusDevice = client("192.168.1.1",502)
